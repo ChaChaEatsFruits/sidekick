@@ -1,11 +1,17 @@
 """Gradio app for the Sidekick. Run with: uv run app.py"""
 
+import asyncio
 import html
+import shutil
+from pathlib import Path
 
 import gradio as gr
 
+import knowledge_base
 import styles
 from sidekick import Sidekick
+
+KB_TYPES = [".pdf", ".md", ".txt"]
 
 LAUNCH_STYLE = {"theme": styles.THEME, "css": styles.CSS, "head": styles.JS}
 
@@ -62,6 +68,21 @@ async def reset(sidekick):
     return "", "", None, gr.update(visible=False), new_sidekick
 
 
+def kb_files_list() -> str:
+    names = [p.name for p in sorted(knowledge_base.KB_DIR.iterdir()) if p.suffix.lower() in KB_TYPES]
+    return f"{len(names)} files: " + ", ".join(names)
+
+
+async def reindex(uploads):
+    """Copy any uploaded documents into kb/, then rebuild the index from everything in kb/."""
+    for upload in uploads or []:
+        path = Path(upload)
+        if path.suffix.lower() in KB_TYPES:
+            shutil.copy(path, knowledge_base.KB_DIR / path.name)  # .name keeps only the file name, never a path
+    chunks = await asyncio.to_thread(knowledge_base.build_index)
+    return None, f"Indexed {chunks} chunks from {kb_files_list()}"
+
+
 def free_resources(sidekick):
     if sidekick:
         sidekick.cleanup()
@@ -85,6 +106,11 @@ with gr.Blocks(title="Sidekick") as ui:
         approve_button = gr.Button("Approve and continue", visible=False, elem_id="approve-button")
         go_button = gr.Button("Go!", elem_id="go-button", interactive=False)
 
+    with gr.Accordion("Knowledge base", open=False):
+        kb_uploads = gr.File(label="Add PDF, Markdown or text files", file_count="multiple", file_types=KB_TYPES)
+        kb_status = gr.Markdown(kb_files_list())
+        reindex_button = gr.Button("Add and re-index")
+
     timer = gr.Timer(1)
 
     ui.load(setup, [], [sidekick, go_button])
@@ -96,7 +122,8 @@ with gr.Blocks(title="Sidekick") as ui:
     go_button.click(process_message, [sidekick, message, success_criteria, chatbot],
                     [chatbot, approve_button, sidekick])
     approve_button.click(approve, [sidekick, chatbot], [chatbot, approve_button, sidekick])
-    reset_button.click(reset, [sidekick], [message, success_criteria, chatbot, approve_button, sidekick])
+    reindex_button.click(reindex, [kb_uploads], [kb_uploads, kb_status])
+    reset_button.click(reset,[sidekick], [message, success_criteria, chatbot, approve_button, sidekick])
 
 
 if __name__ == "__main__":

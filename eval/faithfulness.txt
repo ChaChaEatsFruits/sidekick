@@ -1,0 +1,22 @@
+PASS How many spaces should each indentation level use? | The reply is supported by the retrieved chunk: PEP 8 says to use 4 spaces per indentation level [pep
+PASS What is the recommended maximum number of characters on a line of code? | The assistant’s answer is supported by the retrieved chunk [pep8.md#10], which explicitly states: “L
+PASS How should module-level constants be named? | The reply is supported by the retrieved chunk: PEP 8 states that module-level constants are usually 
+PASS In what order should import groups appear at the top of a file? | The reply is supported by the retrieved chunks: pep8.md#18 states imports should be grouped as stand
+PASS When wrapping a long arithmetic expression, should the line break go before or after the operator? | The reply is supported by the retrieved chunks: PEP 8 says new code should generally break **before*
+PASS How many blank lines go around top-level function and class definitions? | The assistant's reply is supported by the retrieved chunk: it correctly states that top-level functi
+PASS Should docstrings use single or triple double quotes? | The reply is supported by the retrieved chunks: PEP 257 examples show docstrings written with triple
+PASS How should a multi-line docstring be laid out? | The reply is supported by the retrieved chunk [pep257.md#7]. It correctly states that a multi-line d
+PASS Should a one-line docstring be phrased as a command or a description? | The reply is supported by the retrieved chunk [pep257.md#5], which explicitly says a one-line docstr
+FAIL How do I annotate a function argument that can be either an int or None? | The reply answers the question with a valid type-annotation pattern and cites the relevant source. H
+PASS How can I refer to a class in a type hint before the class has been defined? | The reply is supported by the retrieved chunk: PEP 484 says annotations are evaluated when the funct
+PASS What are .pyi stub files used for? | The reply satisfies the task and is fully supported by the retrieved chunks. It correctly explains t
+PASS How do I declare a type variable for a generic function? | The reply is supported by the retrieved chunks. It correctly explains that `TypeVar` from `typing` s
+PASS Is it allowed to write x := 5 as a statement on its own without parentheses? | The reply is supported by the retrieved chunks: [pep572.md#9] explicitly says unparenthesized assign
+PASS What motivated adding a way to assign variables inside an expression? | The reply is supported by the retrieved chunks: it states the feature enables assignment inside expr
+PASS What scope does a name bound inside a list comprehension with := end up in? | The reply is supported by the retrieved chunk [pep572.md#15]. It correctly states that an assignment
+FAIL Is being explicit preferred over being implicit in Python's design philosophy? | The reply is mostly supported by the retrieved chunks: PEP 8 emphasizes readability and consistency,
+PASS What does Python's guiding philosophy say about letting errors pass silently? | The reply is supported by the retrieved chunks: PEP 8 advises against letting exceptions be masked a
+PASS What are the four core functions for managing AI risk? | The reply is supported by the retrieved chunks: both [nist_ai_rmf.pdf#79] and [nist_ai_rmf.pdf#17] e
+PASS What characteristics make an AI system trustworthy? | The reply is fully supported by the retrieved chunks and each substantive claim is cited with a matc
+
+Faithfulness: 18/20 = 90%

@@ -13,6 +13,8 @@ from langchain_core.tools import tool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langchain_mcp_adapters.tools import load_mcp_tools
 
+import knowledge_base
+
 load_dotenv(override=True)
 
 # Wikimedia rejects the wikipedia library's default user agent, so identify ourselves properly
@@ -40,6 +42,34 @@ def request_human_help(instructions: str) -> str:
     such as logging in to a site, passing a captcha, or approving two-factor authentication.
     Explain exactly what you need them to do. The run pauses until they have done it."""
     return "The user says it is done. Continue with the task."
+
+
+MIN_SCORE = 0.3  # cosine similarity below which a chunk is treated as unrelated
+
+
+def format_results(hits: list[dict], min_score: float = MIN_SCORE) -> str:
+    """Turn search hits into the text the model reads.
+
+    Each hit is {"source", "chunk", "text", "score"}, best first. The model cites chunks as
+    [source#chunk], so each chunk must be labelled that way. Decide what to return when no
+    hit clears min_score, so the model knows the knowledge base does not have the answer.
+    """
+    text = ""
+    for search_hit in hits:
+        if search_hit["score"] >= min_score:
+            text += f"[{search_hit['source']}#{search_hit['chunk']}]\n{search_hit['text']}\n\n"
+
+    if text == "":
+        return "No sufficient match found in knowledge base. Tell the user it is not covered there."
+    return text
+
+
+@tool
+def search_knowledge_base(query: str, k: int = 5) -> str:
+    """Search the user's own documents (the knowledge base) for passages relevant to the query.
+    Use this for questions about Python PEPs, Python style, typing, docstrings, the Zen of Python,
+    or AI risk management (NIST). Returns the k best chunks, each labelled [file#chunk] for citation."""
+    return format_results(knowledge_base.search(query, k))
 
 
 def mcp_connections(sandbox: str) -> dict:
@@ -99,5 +129,5 @@ async def get_all_tools(sandbox: str):
     """Return the full tool list (our tools plus the MCP server tools) and the session holder."""
     sessions = McpSessions(mcp_connections(sandbox))
     mcp_tools = await sessions.start()
-    our_tools = [search, send_push_notification, wikipedia_lookup, request_human_help]
+    our_tools = [search, send_push_notification, wikipedia_lookup, request_human_help, search_knowledge_base]
     return our_tools + mcp_tools, sessions

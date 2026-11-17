@@ -1,0 +1,22 @@
+[
+  {"question": "How many spaces should each indentation level use?", "source": "pep8.md", "answer": "4 spaces per indentation level"},
+  {"question": "What is the recommended maximum number of characters on a line of code?", "source": "pep8.md", "answer": "79 characters"},
+  {"question": "How should module-level constants be named?", "source": "pep8.md", "answer": "all capital letters"},
+  {"question": "In what order should import groups appear at the top of a file?", "source": "pep8.md", "answer": "standard library imports"},
+  {"question": "When wrapping a long arithmetic expression, should the line break go before or after the operator?", "source": "pep8.md", "answer": "break after binary operators"},
+  {"question": "How many blank lines go around top-level function and class definitions?", "source": "pep8.md", "answer": "two blank lines"},
+  {"question": "Should docstrings use single or triple double quotes?", "source": "pep257.md", "answer": "triple double quotes"},
+  {"question": "How should a multi-line docstring be laid out?", "source": "pep257.md", "answer": "summary line"},
+  {"question": "Should a one-line docstring be phrased as a command or a description?", "source": "pep257.md", "answer": "as a command"},
+  {"question": "How do I annotate a function argument that can be either an int or None?", "source": "pep484.md", "answer": "optional["},
+  {"question": "How can I refer to a class in a type hint before the class has been defined?", "source": "pep484.md", "answer": "forward reference"},
+  {"question": "What are .pyi stub files used for?", "source": "pep484.md", "answer": "stub files"},
+  {"question": "How do I declare a type variable for a generic function?", "source": "pep484.md", "answer": "typevar("},
+  {"question": "Is it allowed to write x := 5 as a statement on its own without parentheses?", "source": "pep572.md", "answer": "prohibited at the top level of an expression statement"},
+  {"question": "What motivated adding a way to assign variables inside an expression?", "source": "pep572.md", "answer": "naming the result of an expression"},
+  {"question": "What scope does a name bound inside a list comprehension with := end up in?", "source": "pep572.md", "answer": "containing scope"},
+  {"question": "Is being explicit preferred over being implicit in Python's design philosophy?", "source": "zen.txt", "answer": "explicit is better than implicit"},
+  {"question": "What does Python's guiding philosophy say about letting errors pass silently?", "source": "zen.txt", "answer": "errors should never pass silently"},
+  {"question": "What are the four core functions for managing AI risk?", "source": "nist_ai_rmf.pdf", "answer": "govern, map, measure, and manage"},
+  {"question": "What characteristics make an AI system trustworthy?", "source": "nist_ai_rmf.pdf", "answer": "valid and reliable, safe"}
+]
