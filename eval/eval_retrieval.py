@@ -42,7 +42,9 @@ def evaluate(collection: str) -> dict:
         start = time.perf_counter()
         hits = kb.search(item["question"], k=MAX_K, name=collection)
         latencies.append((time.perf_counter() - start) * 1000)
-        has_answer = lambda h: h["source"] == item["source"] and norm(item["answer"]) in norm(h["text"])
+        def has_answer(h, item=item):
+            return h["source"] == item["source"] and norm(item["answer"]) in norm(h["text"])
+
         source_ranks.append(first_rank(hits, lambda h: h["source"] == item["source"]))
         answer_ranks.append(first_rank(hits, has_answer))
         answer_at_5_filtered += any(has_answer(h) and h["score"] >= MIN_SCORE for h in hits[:5])

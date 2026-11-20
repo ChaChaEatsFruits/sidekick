@@ -1,5 +1,7 @@
 # Sidekick
 
+[![CI](https://github.com/ChaChaEatsFruits/sidekick/actions/workflows/ci.yml/badge.svg)](https://github.com/ChaChaEatsFruits/sidekick/actions/workflows/ci.yml)
+
 A personal co-worker agent. A LangChain `create_agent` worker is wrapped in an evaluator loop that
 checks each answer against your success criteria and retries up to 3 times, or returns to you with
 a question. The UI is Gradio.
