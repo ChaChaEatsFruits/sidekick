@@ -7,3 +7,5 @@ memory.db
 .playwright-mcp/
 chroma_db/
 metrics.jsonl
+frontend/node_modules/
+frontend/dist/
