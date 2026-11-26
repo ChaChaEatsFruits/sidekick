@@ -18,7 +18,7 @@ def test_retrieval_finds_expected_source(test_index):
 
 
 def test_rebuild_after_search_in_same_process(test_index):
-    # the Gradio re-index button rebuilds a collection this process has already searched
+    # the re-index endpoint rebuilds a collection this process has already searched
     first = build_index(name=test_index)
     assert build_index(name=test_index) == first
     assert search("line length", k=1, name=test_index)[0]["source"] == "pep8.md"

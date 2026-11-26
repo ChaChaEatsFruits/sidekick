@@ -12,12 +12,6 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
       "port": 5173
-    },
-    {
-      "name": "sidekick",
-      "runtimeExecutable": "uv",
-      "runtimeArgs": ["run", "app.py"],
-      "port": 7860
     }
   ]
 }
