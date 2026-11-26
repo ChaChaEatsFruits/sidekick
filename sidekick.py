@@ -206,9 +206,11 @@ needs clarification, or seems stuck. Give brief, concrete feedback."""
         }
         return await self._advance(payload, history + [{"role": "user", "content": message}])
 
-    async def resume(self, history: list) -> list:
-        """Approve the actions the worker paused on, and continue the turn."""
-        payload = Command(resume={"decisions": [{"type": "approve"}] * self.pending_actions})
+    async def resume(self, history: list, approve: bool = True) -> list:
+        """Approve or reject the actions the worker paused on, and continue the turn.
+        A rejected action is reported to the worker as declined by the user, and it carries on without it."""
+        decision = {"type": "approve" if approve else "reject"}
+        payload = Command(resume={"decisions": [decision] * self.pending_actions})
         return await self._advance(payload, history)
 
     async def _advance(self, payload, history: list) -> list:
