@@ -8,6 +8,10 @@ os.environ.update(PLACEHOLDERS)
 import pytest  # noqa: E402
 
 import sidekick  # noqa: E402,F401  (its load_dotenv(override=True) runs now, so the fixture below wins)
+import sidekick_tools  # noqa: E402
+
+# The search tool read SERPER_API_KEY at import, after load_dotenv(override=True) put any real key back.
+sidekick_tools.search.api_wrapper.serper_api_key = PLACEHOLDERS["SERPER_API_KEY"]
 
 
 @pytest.fixture(autouse=True)

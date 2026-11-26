@@ -115,8 +115,13 @@ class McpSessions:
     async def start(self) -> list:
         self._task = asyncio.create_task(self._run())
         ready = asyncio.create_task(self._ready.wait())
-        await asyncio.wait([ready, self._task], return_when=asyncio.FIRST_COMPLETED)
-        ready.cancel()
+        try:
+            await asyncio.wait([ready, self._task], return_when=asyncio.FIRST_COMPLETED)
+        except asyncio.CancelledError:  # a reset while starting: _run still shuts the servers once they are up
+            self.stop()
+            raise
+        finally:
+            ready.cancel()
         if self._task.done():
             self._task.result()  # the servers failed to start; raise the real error
         return self.tools

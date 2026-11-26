@@ -96,6 +96,17 @@ def test_reset_cancels_running_turn(client):
     assert state["messages"] == []
 
 
+def test_reset_during_startup_cleans_up_the_starting_sidekick(client, monkeypatch):
+    wait_for(client, "ready")
+    monkeypatch.setattr(FakeSidekick, "setup_delay", 5.0)
+    client.post("/api/session")
+    starting = FakeSidekick.instances[-1]
+    monkeypatch.setattr(FakeSidekick, "setup_delay", 0.0)
+    client.post("/api/session")
+    wait_for(client, "ready")
+    assert starting.cleaned
+
+
 def test_stream_first_event_is_snapshot(client):
     wait_for(client, "ready")
 
